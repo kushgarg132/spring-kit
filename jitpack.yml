@@ -1,2 +1,7 @@
 jdk:
   - openjdk21
+# JitPack's bundled Maven (and mvnw inside its image) failed to launch on 2026-10-04, so fetch a
+# clean Maven ourselves and ignore any MAVEN_HOME/M2_HOME the image sets.
+install:
+  - curl -fsSL https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz | tar xz -C /tmp
+  - env -u MAVEN_HOME -u M2_HOME -u MAVEN_OPTS /tmp/apache-maven-3.9.9/bin/mvn -B install -DskipTests
