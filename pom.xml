@@ -6,7 +6,7 @@
 
   <groupId>com.github.kushgarg132</groupId>
   <artifactId>spring-kit</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <name>spring-kit</name>
   <description>Shared Spring Boot building blocks: error envelope, JWT, rate limiting, AES-GCM, Google sign-in.</description>
 

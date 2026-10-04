@@ -10,7 +10,10 @@ import java.security.GeneralSecurityException;
 import java.util.Collection;
 
 /**
- * Verifies Google Sign-In ID tokens (signature, issuer, expiry, audience). Needs
+ * Verifies Google Sign-In ID tokens (signature, issuer, expiry, audience) and requires
+ * {@code email_verified}: Google issues valid tokens for addresses nobody proved they own, and
+ * apps link sign-ins to existing accounts by email, so an unverified email would be an account
+ * takeover. Needs
  * {@code com.google.api-client:google-api-client} on the app's classpath.
  */
 public class GoogleIdTokens {
@@ -33,7 +36,7 @@ public class GoogleIdTokens {
     public GoogleIdToken.Payload verify(String idToken) {
         try {
             GoogleIdToken token = verifier.verify(idToken);
-            if (token == null) {
+            if (token == null || !Boolean.TRUE.equals(token.getPayload().getEmailVerified())) {
                 throw new InvalidCredentialsException(INVALID);
             }
             return token.getPayload();

@@ -160,6 +160,27 @@ class KitTest {
         assertThat(ClientIp.current()).isNull();
     }
 
+    @Test
+    void googleTokensWithUnverifiedEmailAreRejected() throws Exception {
+        var verifier = org.mockito.Mockito.mock(com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier.class);
+        var token = org.mockito.Mockito.mock(com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.class);
+        var payload = new com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload().setEmail("victim@corp.com");
+        org.mockito.Mockito.when(token.getPayload()).thenReturn(payload);
+        org.mockito.Mockito.when(verifier.verify("t")).thenReturn(token);
+        var google = new io.github.kushgarg132.kit.security.GoogleIdTokens(verifier);
+
+        assertThatThrownBy(() -> google.verify("t"))
+                .isInstanceOf(io.github.kushgarg132.kit.error.InvalidCredentialsException.class);
+        payload.setEmailVerified(false);
+        assertThatThrownBy(() -> google.verify("t"))
+                .isInstanceOf(io.github.kushgarg132.kit.error.InvalidCredentialsException.class);
+        payload.setEmailVerified(true);
+        assertThat(google.verify("t").getEmail()).isEqualTo("victim@corp.com");
+        org.mockito.Mockito.when(verifier.verify("bad")).thenReturn(null);
+        assertThatThrownBy(() -> google.verify("bad"))
+                .isInstanceOf(io.github.kushgarg132.kit.error.InvalidCredentialsException.class);
+    }
+
     @RestController
     static class Boom {
         @GetMapping("/missing") String missing() { throw new ResourceNotFoundException("Habit", 42); }

@@ -26,12 +26,12 @@ class the app builds from its own properties.
 <dependency>
   <groupId>com.github.kushgarg132</groupId>
   <artifactId>spring-kit</artifactId>
-  <version>v0.1.0</version>
+  <version>v0.1.1</version>
 </dependency>
 ```
 
 Gradle: `maven { url 'https://jitpack.io' }` and
-`implementation 'com.github.kushgarg132:spring-kit:v0.1.0'`.
+`implementation 'com.github.kushgarg132:spring-kit:v0.1.1'`.
 
 ```java
 @Bean JwtCodec jwt(MyJwtProperties p) {
