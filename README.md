@@ -47,3 +47,7 @@ Gradle: `maven { url 'https://jitpack.io' }` and
 ```
 
 Release: bump `<version>`, `git tag vX.Y.Z && git push --tags`. JitPack builds on first request.
+
+## Recipes
+
+`recipes/` holds snapshots of code from retired apps (refresh cookie + CSRF, STOMP JWT auth, Web Push, per-resource RBAC, a React UI kit, an axios client that refreshes on 401). They are not compiled. See `recipes/README.md`.

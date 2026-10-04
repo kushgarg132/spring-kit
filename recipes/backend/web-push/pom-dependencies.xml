@@ -1,0 +1,15 @@
+    <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-websocket</artifactId></dependency>
+    <dependency><groupId>nl.martijndwars</groupId><artifactId>web-push</artifactId><version>5.1.2</version></dependency>
+    <!-- web-push depends on jose4j at runtime scope, but WebPushSender's constructor uses
+         PushService which references it at compile time. Pin it explicitly. -->
+    <dependency><groupId>org.bitbucket.b_c</groupId><artifactId>jose4j</artifactId><version>0.7.9</version></dependency>
+    <!-- web-push's own bcprov-jdk15on is optional=true so it doesn't transit to us; jdk18on is the
+         current maintenance line, same org.bouncycastle.* API, works fine on Java 21. -->
+    <dependency><groupId>org.bouncycastle</groupId><artifactId>bcprov-jdk18on</artifactId><version>1.86</version></dependency>
+    <!-- PushService.send() returns org.apache.http.HttpResponse, but web-push only pulls
+         httpcore/httpclient transitively at runtime scope (via async-http-client). This project
+         happens to also compile without these two declared explicitly, because
+         google-api-client's google-http-client-apache-v2 pulls the same artifacts in at compile
+         scope for an unrelated reason (Google OAuth) — pin them here so that isn't an accident. -->
+    <dependency><groupId>org.apache.httpcomponents</groupId><artifactId>httpcore</artifactId><version>4.4.16</version></dependency>
+    <dependency><groupId>org.apache.httpcomponents</groupId><artifactId>httpclient</artifactId><version>4.5.14</version></dependency>
